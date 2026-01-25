@@ -21,7 +21,7 @@ from openai import OpenAI
 # ---------------------------
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 CURRENTS_API_KEY = os.getenv("CURRENTS_API_KEY")
-STABILITY_API_KEY = os.getenv("STABILITY_API_KEY")  # <-- добавляем
+STABILITY_API_KEY = os.getenv("STABILITY_API_KEY")
 
 # TTL на хранение картинок в памяти (секунды)
 IMAGE_TTL_SECONDS = int(os.getenv("IMAGE_TTL_SECONDS", "1800"))  # 30 минут по умолчанию
