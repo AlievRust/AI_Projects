@@ -12,7 +12,6 @@ from pydantic import BaseModel
 
 from PIL import Image, ImageDraw, ImageFont
 
-# Новый SDK OpenAI (openai>=1.x)
 from openai import OpenAI
 
 
@@ -26,7 +25,7 @@ STABILITY_API_KEY = os.getenv("STABILITY_API_KEY")
 # TTL на хранение картинок в памяти (секунды)
 IMAGE_TTL_SECONDS = int(os.getenv("IMAGE_TTL_SECONDS", "1800"))  # 30 минут по умолчанию
 
-# Шрифт с кириллицей. На большинстве Linux образов есть DejaVuSans.
+# Шрифт с кириллицей.
 DEFAULT_FONT_PATHS = [
     os.getenv("FONT_PATH", "").strip(),
     "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
@@ -192,7 +191,6 @@ def stability_generate_jpeg(prompt: str) -> bytes:
         "authorization": f"Bearer {STABILITY_API_KEY}",
         "accept": "image/*",
     }
-    # "files={'none': ''}" — как у тебя в примере :contentReference[oaicite:5]{index=5}
     data = {
         "prompt": prompt,
         "output_format": "jpeg",
@@ -227,8 +225,7 @@ def crop_to_story_9_16(img: Image.Image) -> Image.Image:
 
 def add_text_overlay(img: Image.Image, text: str) -> Image.Image:
     """
-    Оверлей-плашка + текст. По мотивам твоего imagegen :contentReference[oaicite:6]{index=6},
-    но безопаснее для продакшена (фонт-фоллбек, авторазметка, без хардкода Colab путей).
+    Оверлей-плашка + текст.
     """
     img = img.convert("RGBA")
     draw = ImageDraw.Draw(img)
@@ -273,7 +270,7 @@ def add_text_overlay(img: Image.Image, text: str) -> Image.Image:
     line_h = ascent + descent + 6
     block_h = line_h * len(lines)
 
-    # позиция: верхняя часть, как в твоём примере (x=100, y=100) :contentReference[oaicite:7]{index=7}
+    # позиция: верхняя часть (x=100, y=100)
     x = margin_x
     y = margin_y
 
@@ -324,7 +321,6 @@ async def heartbeat_api():
 
 @app.post("/generate-post")
 async def generate_post_api(topic: Topic):
-    # сохранён твой endpoint :contentReference[oaicite:8]{index=8}
     return generate_post_bundle(topic.topic)
 
 
